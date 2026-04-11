@@ -1,0 +1,2 @@
+# Treat binaries as binary files (no line ending conversion)
+bin/lah-cli-*  binary
