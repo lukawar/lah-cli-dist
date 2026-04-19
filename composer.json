@@ -2,7 +2,7 @@
     "name": "yourname/lah-cli",
     "description": "lah-cli — VS Code sidecar for Laravel development",
     "type": "library",
-    "version": "1.0.0",
+    "version": "1.0.7",
     "bin": [
         "bin/lah-cli"
     ],
