@@ -1,33 +1,11 @@
-#!/usr/bin/env bash
-# Wrapper script — detects platform and runs the correct binary.
-# Works correctly when called via symlink (vendor/bin/lah-cli).
-
-SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do
-  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-done
-DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH=$(uname -m)
-
+#!/usr/bin/env sh
+set -e
+DIR="$(cd "$(dirname "$0")" && pwd)"
+OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+ARCH="$(uname -m)"
 case "$ARCH" in
-  x86_64)        ARCH="amd64" ;;
+  x86_64) ARCH="amd64" ;;
   arm64|aarch64) ARCH="arm64" ;;
-  *)
-    echo "lah-cli: unsupported architecture: $ARCH" >&2
-    exit 1
-    ;;
+  *) echo "lah-cli: unsupported architecture: $ARCH" >&2; exit 1 ;;
 esac
-
-BINARY="$DIR/lah-cli-${OS}-${ARCH}"
-
-if [ ! -f "$BINARY" ]; then
-  echo "lah-cli: binary not found for platform ${OS}-${ARCH}" >&2
-  echo "lah-cli: expected: $BINARY" >&2
-  exit 1
-fi
-
-exec "$BINARY" "$@"
+exec "$DIR/lah-cli-${OS}-${ARCH}" "$@"
